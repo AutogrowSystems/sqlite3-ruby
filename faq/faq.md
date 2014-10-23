@@ -2,7 +2,7 @@
 ## How do I do a database query?
 ### I just want an array of the rows...
 
-Use the Database#execute method. If you don't give it a block, it will
+Use the `Database#execute` method. If you don't give it a block, it will
 return an array of all the rows:
 
 ```ruby
@@ -14,7 +14,7 @@ return an array of all the rows:
 
 ### I'd like to use a block to iterate through the rows...
 
-Use the Database#execute method. If you give it a block, each row of the
+Use the `Database#execute` method. If you give it a block, each row of the
 result will be yielded to the block:
 
 
@@ -29,7 +29,7 @@ result will be yielded to the block:
 
 ### I need to get the column names as well as the rows...
 
-Use the Database#execute2 method. This works just like Database#execute;
+Use the `Database#execute2` method. This works just like `Database#execute`;
 if you don't give it a block, it returns an array of rows; otherwise, it
 will yield each row to the block. _However_, the first row returned is
 always an array of the column names from the query:
@@ -55,7 +55,7 @@ always an array of the column names from the query:
 
 ### I just want the first row of the result set...
 
-Easy. Just call Database#get_first_row:
+Easy. Just call `Database#get_first_row`:
 
 
 ```ruby
@@ -63,12 +63,12 @@ Easy. Just call Database#get_first_row:
 ```
 
 
-This also supports bind variables, just like Database#execute
+This also supports bind variables, just like `Database#execute`
 and friends.
 
 ### I just want the first value of the first row of the result set...
 
-Also easy. Just call Database#get_first_value:
+Also easy. Just call `Database#get_first_value`:
 
 
 ```ruby
@@ -76,15 +76,15 @@ Also easy. Just call Database#get_first_value:
 ```
 
 
-This also supports bind variables, just like Database#execute
+This also supports bind variables, just like `Database#execute`
 and friends.
 
 ## How do I prepare a statement for repeated execution?
 
 If the same statement is going to be executed repeatedly, you can speed
 things up a bit by _preparing_ the statement. You do this via the
-Database#prepare method. It returns a Statement object, and you can
-then invoke #execute on that to get the ResultSet:
+`Database#prepare` method. It returns a `Statement` object, and you can
+then invoke `#execute` on that to get the `ResultSet`:
 
 
 ```ruby
@@ -111,7 +111,7 @@ then invoke #execute on that to get the ResultSet:
 
 
 This is made more useful by the ability to bind variables to placeholders
-via the Statement#bind_param and Statement#bind_params methods. (See the
+via the `Statement#bind_param` and `Statement#bind_params` methods. (See the
 next FAQ for details.)
 
 ## How do I use placeholders in an SQL statement?
@@ -119,9 +119,9 @@ next FAQ for details.)
 Placeholders in an SQL statement take any of the following formats:
 
 
-* @?@
-* @?_nnn_@
-* @:_word_@
+* `?`
+* `?_nnn_`
+* `:_word_`
 
 
 Where _n_ is an integer, and _word_ is an alpha-numeric identifier (or
@@ -152,7 +152,7 @@ You replace these placeholders by _binding_ them to values. This can be
 accomplished in a variety of ways.
 
 
-The Database#execute, and Database#execute2 methods all accept additional
+The `Database#execute`, and `Database#execute2` methods all accept additional
 arguments following the SQL statement. These arguments are assumed to be
 bind parameters, and they are bound (positionally) to their corresponding
 placeholders:
@@ -181,8 +181,8 @@ to the placeholders. This is how you bind by name:
 ```
 
 
-You can also bind explicitly using the Statement object itself. Just pass
-additional parameters to the Statement#execute statement:
+You can also bind explicitly using the `Statement` object itself. Just pass
+additional parameters to the `Statement#execute` statement:
 
 
 ```ruby
@@ -192,8 +192,8 @@ additional parameters to the Statement#execute statement:
 ```
 
 
-Or do a Database#prepare to get the Statement, and then use either
-Statement#bind_param or Statement#bind_params:
+Or do a `Database#prepare` to get the `Statement`, and then use either
+`Statement#bind_param` or `Statement#bind_params`:
 
 
 ```ruby
@@ -228,8 +228,8 @@ types:
 
 Obviously, this approach requires you to execute a statement that actually
 returns data. If you don't know if the statement will return any rows, but
-you still need the metadata, you can use Database#query and ask the
-ResultSet object itself:
+you still need the metadata, you can use `Database#query` and ask the
+`ResultSet` object itself:
 
 
 ```ruby
@@ -241,7 +241,7 @@ ResultSet object itself:
 ```
 
 
-Lastly, you can use Database#prepare and ask the Statement object what
+Lastly, you can use `Database#prepare` and ask the `Statement` object what
 the metadata are:
 
 
@@ -253,14 +253,14 @@ the metadata are:
 
 ## I'd like the rows to be indexible by column name.
 
-By default, each row from a query is returned as an Array of values. This
+By default, each row from a query is returned as an `Array` of values. This
 means that you can only obtain values by their index. Sometimes, however,
 you would like to obtain values by their column name.
 
 
-The first way to do this is to set the Database property "results_as_hash"
+The first way to do this is to set the Database property `results_as_hash`
 to true. If you do this, then all rows will be returned as Hash objects,
-with the column names as the keys. (In this case, the "fields" property
+with the column names as the keys. (In this case, the `fields` property
 is unavailable on the row, although the "types" property remains.)
 
 
@@ -274,8 +274,8 @@ is unavailable on the row, although the "types" property remains.)
 
 
 The other way is to use Ara Howard's
-"ArrayFields":http://rubyforge.org/projects/arrayfields
-module. Just require "arrayfields", and all of your rows will be indexable
+[`ArrayFields`](http://rubyforge.org/projects/arrayfields)
+module. Just `require "arrayfields"`, and all of your rows will be indexable
 by column name, even though they are still arrays!
 
 
@@ -291,7 +291,7 @@ by column name, even though they are still arrays!
 
 ## I'd like the values from a query to be the correct types, instead of String.
     
-You can turn on "type translation" by setting Database#type_translation to
+You can turn on "type translation" by setting `Database#type_translation` to
 true:
 
 
@@ -346,12 +346,12 @@ variables to make it work:
 
 
 The blob values must be indicated explicitly by binding each parameter to
-a value of type SQLite3::Blob.
+a value of type `SQLite3::Blob`.
 
 ## How do I do a DDL (insert, update, delete) statement?
 
 You can actually do inserts, updates, and deletes in exactly the same way
-as selects, but in general the Database#execute method will be most
+as selects, but in general the `Database#execute` method will be most
 convenient:
 
 
@@ -361,14 +361,14 @@ convenient:
 
 ## How do I execute multiple statements in a single string?
     
-The standard query methods (Database#execute, Database#execute2,
-Database#query, and Statement#execute) will only execute the first
+The standard query methods (`Database#execute`, `Database#execute2`,
+`Database#query`, and `Statement#execute`) will only execute the first
 statement in the string that is given to them. Thus, if you have a
 string with multiple SQL statements, each separated by a string,
 you can't use those methods to execute them all at once.
 
 
-Instead, use Database#execute_batch:
+Instead, use `Database#execute_batch`:
 
 
 ```ruby
@@ -387,16 +387,16 @@ Instead, use Database#execute_batch:
 ```
 
 
-Unlike the other query methods, Database#execute_batch accepts no
-block. It will also only ever return +nil+. Thus, it is really only
+Unlike the other query methods, `Database#execute_batch` accepts no
+block. It will also only ever return `nil`. Thus, it is really only
 suitable for batch processing of DDL statements.
 
 ## How do I begin/end a transaction
     
-Use Database#transaction to start a transaction. If you give it a block,
+Use `Database#transaction` to start a transaction. If you give it a block,
 the block will be automatically committed at the end of the block,
 unless an exception was raised, in which case the transaction will be
-rolled back. (Never explicitly call Database#commit or Database#rollback
+rolled back. (Never explicitly call `Database#commit` or `Database#rollback`
 inside of a transaction block--you'll get errors when the block
 terminates!)
 
@@ -409,9 +409,9 @@ terminates!)
 ```
 
 
-Alternatively, if you don't give a block to Database#transaction, the
-transaction remains open until you explicitly call Database#commit or
-Database#rollback.
+Alternatively, if you don't give a block to `Database#transaction`, the
+transaction remains open until you explicitly call `Database#commit` or
+`Database#rollback`.
 
 
 ```ruby
@@ -423,7 +423,7 @@ Database#rollback.
 
 Note that SQLite does not allow nested transactions, so you'll get errors
 if you try to open a new transaction while one is already active. Use
-Database#transaction_active? to determine whether a transaction is
+`Database#transaction_active?` to determine whether a transaction is
 active or not.
 
 ## How do I discover metadata about a table/index?
